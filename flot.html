@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://static.pureexample.com/js/flot/excanvas.min.js"></script>
+<script src="http://static.pureexample.com/js/flot/jquery.flot.min.js"></script>
+<script src="http://static.pureexample.com/js/flot/jquery.flot.stack.min.js"></script>
+
+<!-- Javascript -->
+<script type="text/javascript">
+$(function () {    
+    var data1 = GenerateSeries(0);
+    var data2 = GenerateSeries(100);
+    var dataset = [data1, data2];
+
+    function GenerateSeries(added){
+        var data = [];
+        var start = 100 + added;
+        var end = 200 + added;
+
+        for(i=1;i<=100;i++){        
+            var d = Math.floor(Math.random() * (end - start + 1) + start);        
+            data.push([i, d]);
+            start++;
+            end++;
+        }
+
+        return data;
+    }
+
+    var options = {
+            series:{
+                stack: true     
+            },
+            legend: {
+                position: 'nw',
+                labelBoxBorderColor: "#000000",
+                container: $("#example-section12 #legendPlaceholder"),
+                noColumns: 0
+            }
+    };
+
+    var plot;
+    
+    
+    function ToggleSeries(){
+        var d = [];
+
+        $("#example-section28 input[type='checkbox']").each(function(){
+            if($(this).is(":checked")){
+                var seqence = $(this).attr("id").replace("cbdata", "");
+                d.push({label:"data" + seqence, data: dataset[seqence - 1]});                
+            } 
+        });
+
+        options.series.lines = {};
+        options.series.bars = {};
+
+        $("#example-section28 input[type='radio']").each(function(){
+            if($(this).is(":checked")){
+                if($(this).val() == "line"){                    
+                    options.series.lines = {fill: true};
+                }else{
+                    options.series.bars = {show: true};
+                }            
+            } 
+        });
+
+        $.plot($("#example-section28 #flotcontainer"), d, options);  
+    }
+
+    
+    $("#example-section28 input").change(function(){
+        ToggleSeries();
+    });
+
+    ToggleSeries();
+});
+</script>
+
+<!-- HTML -->
+<div id="example-section28">
+    <div id="legendPlaceholder"></div>
+    <div id="flotcontainer" style="width: 600px;height:200px; text-align: left;margin-top:10px"></div>
+    <Br>
+    <div>
+        Chart Type : <input id="chartType1" checked name="ct" type="radio" value="line" /><label for="chartType1" style="display:inline">Line chart</label>&nbsp;
+        <input id="chartType2" name="ct" type="radio" value="bar" /><label for="chartType2" style="display:inline">Bar chart</label>&nbsp;
+    </div>
+    <div>
+        Toggle series : <input type="checkbox" id="cbdata1" checked><label for="cbdata1" style="display:inline">data1</label>&nbsp;
+        <input type="checkbox" id="cbdata2" checked><label for="cbdata2" style="display:inline">data2</label>&nbsp;
+    </div>
+</div>
+</body>
+</html>
