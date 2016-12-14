@@ -206,7 +206,7 @@
     <script src="scripts/morris.min.js"></script>
     <script src="scripts/morris-data.js"></script>
 
-    <!-- Custom Theme JavaScript -->
+    <!-- Custom Theme JavaScript! -->
     <script src="scripts/sb-admin-2.js"></script>
 
 </body>
