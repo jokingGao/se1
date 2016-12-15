@@ -166,6 +166,9 @@
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
+                            <a href="suggestion.php"><i class="fa fa-tag fa-fw"></i> Suggestion</a>
+                        </li>
+                        <li>
                             <a href="contactus.php"><i class="fa fa-envelope-o fa-fw"></i> Contact Us</a>
                         </li>
                     </ul>
@@ -181,13 +184,21 @@
                     <h1 class="page-header"><i class="fa fa-home"></i> GYM</h1>
                     
                 </div>
+                
                 <!-- /.col-lg-12 -->
-                <div class="row">
                 <div class="col-lg-12">
-                    <div id="map" style="width:700px;height:500px;"></div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-home"></i> Nearby Gym
+                        </div>
+                        <div class="panel-body">
+                            <div id="map" style="width:900px;height:500px;"></div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
                 </div>
-                </div>
-                <!-- /.col-lg-12 -->
             </div>
             </div>
             <!-- /.row -->

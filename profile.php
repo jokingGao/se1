@@ -59,21 +59,21 @@ if(isset($_POST["submit"]))
 {
   if ($_SERVER["REQUEST_METHOD"] == "POST")
   { 
-    if(@$_POST["gender"] != null){    
-    $gender=$_POST["gender"];
-    mysql_query("UPDATE account SET Gender='$gender' WHERE EmailAdd='$email'");
+    if(@$_POST["Gender"] != null){    
+    $gender=$_POST["Gender"];
+    mysql_query("UPDATE account SET Gender='$Gender' WHERE EmailAdd='$email'");
     }
-    if(@$_POST["age"] != 0){    
-    $age=$_POST["age"];
-    mysql_query("UPDATE account SET Age='$age' WHERE EmailAdd='$email'");
+    if(@$_POST["Gge"] != 0){    
+    $age=$_POST["Gge"];
+    mysql_query("UPDATE account SET Age='$Age' WHERE EmailAdd='$email'");
     }
-    if(@$_POST["height"] != 0){
-    $height=$_POST["height"];
-    mysql_query("UPDATE account SET height='$height' WHERE EmailAdd='$email'");
+    if(@$_POST["Height"] != 0){
+    $height=$_POST["Height"];
+    mysql_query("UPDATE account SET Height='$Height' WHERE EmailAdd='$email'");
     }
-    if(@$_POST["weight"] != 0){
-    $weight=$_POST["weight"];
-    mysql_query("UPDATE account SET weight='$weight' WHERE EmailAdd='$email'");
+    if(@$_POST["Weight"] != 0){
+    $weight=$_POST["Weight"];
+    mysql_query("UPDATE account SET Weight='$Weight' WHERE EmailAdd='$email'");
     }
   }
 }
@@ -237,7 +237,7 @@ if(isset($_POST["submit"]))
                             <h4><i class="fa fa-female"></i> Gender:</h4>
                             <h5 class="text-danger"> 
                             <?php  
-                                if($value['Gender'] == NULL ){
+                                if(@$value['Gender'] == NULL ){
                                     echo '<input class="form-control" placeholder="Please enter your Gender" name="gender">';
                                 }else{echo $value['Gender'];}
                             ?>
@@ -246,7 +246,7 @@ if(isset($_POST["submit"]))
                             <h4><i class="fa fa-user-md"></i> Age:</h4>
                             <h5 class="text-danger"> 
                             <?php  
-                                if($value['Age'] == 0 ){
+                                if(@$value['Age'] == 0 ){
                                     echo '<input class="form-control" placeholder="Please enter your Age" name="age">';
                                 }else{echo $value['Age'];}
                             ?>
@@ -255,18 +255,18 @@ if(isset($_POST["submit"]))
                             <h4><i class="fa fa-arrows-v"></i> Height:</h4>
                             <h5 class="text-danger"> 
                             <?php  
-                                if($value['height'] == 0 ){
+                                if(@$value['Height'] == 0 ){
                                     echo '<input class="form-control" placeholder="Please enter your height" name="height">';
-                                }else{echo $value['height'];}
+                                }else{echo $value['Height'];}
                             ?> inch
                             </h5>
 
                             <h4><i class="fa fa-database"></i> Weight:</h4>
                             <h5 class="text-danger"> 
                             <?php  
-                                if($value['weight'] == 0 ){
+                                if(@$value['Weight'] == 0 ){
                                     echo '<input class="form-control" placeholder="Please enter your weight" name="weight">';
-                                }else{echo $value['weight'];}
+                                }else{echo $value['Weight'];}
                             ?> pound
                             </h5>
                             <br>

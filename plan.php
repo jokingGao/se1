@@ -56,29 +56,42 @@ if(!$db)
   die("Failed to connect to MySQL:". mysql_error());
 }
 
-$result = mysql_query("SELECT * from account where EmailAdd='$email'");
+$result = mysql_query("SELECT * from plan where EmailAdd='$email'");
 $value = mysql_fetch_assoc($result);
 
 if(isset($_POST["submit"]))
 {
   if ($_SERVER["REQUEST_METHOD"] == "POST")
   { 
-    if(@$_POST["gender"] != null){    
-    $gender=$_POST["gender"];
-    mysql_query("UPDATE account SET Gender='$gender' WHERE EmailAdd='$email'");
+    if(@$_POST["StartDate"] != null){    
+    $StartDate=$_POST["StartDate"];
+    mysql_query("UPDATE plan SET StartDate='$StartDate' WHERE EmailAdd='$email'");
     }
-    if(@$_POST["age"] != 0){    
-    $age=$_POST["age"];
-    mysql_query("UPDATE account SET Age='$age' WHERE EmailAdd='$email'");
+    if(@$_POST["StartTime"] != null){    
+    $StartTime=$_POST["StartTime"];
+    mysql_query("UPDATE plan SET StartTime='$StartTime' WHERE EmailAdd='$email'");
     }
-    if(@$_POST["height"] != 0){
-    $height=$_POST["height"];
-    mysql_query("UPDATE account SET height='$height' WHERE EmailAdd='$email'");
+    if(@$_POST["EndTime"] != null){
+    $EndTime=$_POST["EndTime"];
+    mysql_query("UPDATE plan SET EndTime='$EndTime' WHERE EmailAdd='$email'");
     }
-    if(@$_POST["weight"] != 0){
-    $weight=$_POST["weight"];
-    mysql_query("UPDATE account SET weight='$weight' WHERE EmailAdd='$email'");
+    if(@$_POST["EndDate"] != null){
+    $EndDate=$_POST["EndDate"];
+    mysql_query("UPDATE plan SET EndDate='$EndDate' WHERE EmailAdd='$email'");
     }
+
+    //Body checkbox
+    if(@$_POST["Body"] != null){
+
+    $result = "";
+    foreach ($_POST["Body"] as $i) {
+        //$result .= $i;
+        $result = implode(",",$_POST["Body"]);
+    }
+
+    mysql_query("UPDATE plan SET Body='$result' WHERE EmailAdd='$email'");
+    }
+
   }
 }
 ?>
@@ -229,7 +242,7 @@ if(isset($_POST["submit"]))
                 <!-- /.col-lg-12 -->
 
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-success">
                         <div class="panel-heading">
                             <i class="fa fa-edit fa-fw"></i> Input plan
                         </div>
@@ -239,10 +252,10 @@ if(isset($_POST["submit"]))
                                     <form role="form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" >
                                         <h4><i class="fa fa-clock-o"></i> Please select a time: </h4>
                                         <p id="basicExample">
-                                            <input type="text" class="date start" />
-                                            <input type="text" class="time start" /> to
-                                            <input type="text" class="time end" />
-                                            <input type="text" class="date end" />
+                                            <input type="text" class="date start" name="StartDate" />
+                                            <input type="text" class="time start ui-timepicker-input" name="StartTime" /> to
+                                            <input type="text" class="time end ui-timepicker-input" name="EndTime" />
+                                            <input type="text" class="date end" name="EndDate" />
                                         </p>
                                         <br>
                                         <h4><i class="fa fa-user"></i> Please select body parts you want to fit: </h4>
@@ -250,38 +263,38 @@ if(isset($_POST["submit"]))
                                         <div class="form-group">
                                             <label>Upper</label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox">Breast
+                                                <input type="checkbox" value="Breast" name="Body[]">Breast
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox">Back
+                                                <input type="checkbox" value="Back" name="Body[]">Back
                                             </label>
                                             <label class="checkbox-inline">
-                                                <input type="checkbox">Shoulder
+                                                <input type="checkbox" value="Shoulder" name="Body[]">Shoulder
                                             </label>
                                             <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Arms
+                                            <input type="checkbox" value="Arms" name="Body[]">Arms
                                             </label>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Core</label>
                                             <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Abs
+                                            <input type="checkbox" value="Abs" name="Body[]">Abs
                                             </label>
                                         </div>
 
                                         <div class="form-group">
                                             <label>Lower</label>
                                             <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Gluteus
+                                            <input type="checkbox" value="Gluteus" name="Body[]">Gluteus
                                             </label>
                                             <label class="checkbox-inline">
-                                            <input type="checkbox" value="">Legs
+                                            <input type="checkbox" value="Legs" name="Body[]">Legs
                                             </label>
                                         </div>
 
-                                        <button type="submit" class="btn btn-default">Submit Button</button>
-                                        <button type="reset" class="btn btn-default">Reset Button</button>
+                                        <button type="submit" class="btn btn-default" name="submit">Submit</button>
+                                        <button type="reset" class="btn btn-default">Reset</button>
                                     </form>
                                     <!--/.plan form -->
                                 </div>
@@ -292,7 +305,7 @@ if(isset($_POST["submit"]))
                     </div>
                     <!-- /.panel -->
 
-                    <div class="panel panel-default">
+                    <div class="panel panel-info">
                         <div class="panel-heading">
                             <i class="fa fa-calendar-o fa-fw"></i> Generated Plan
                         </div>
@@ -305,14 +318,20 @@ if(isset($_POST["submit"]))
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
                                             <h4 class="timeline-title">Assignment 1</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from to</small>
+                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from <?php  echo $value['StartDate']; echo " "; echo $value['StartTime'];?> to <?php  echo $value['EndDate']; echo " "; echo $value['EndTime'];?></small>
                                             </p>
                                         </div>
                                         <div class="timeline-body">
                                             <ul>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
+                                                <?php  
+                                                    $array = explode(',', $value['Body']);
+                                                    foreach ($array as $i) {
+                                                        echo "<li>";
+                                                        echo $i;
+                                                        echo "</li>";
+                                                    }
+                                                ?>
+
                                             </ul>
                                         </div>
                                     </div>
@@ -415,11 +434,11 @@ if(isset($_POST["submit"]))
     // initialize input widgets first
     $('#basicExample .time').timepicker({
         'showDuration': true,
-        'timeFormat': 'g:ia'
+        'timeFormat': 'G:i'
     });
 
     $('#basicExample .date').datepicker({
-        'format': 'm/d/yyyy',
+        'format': 'yyyy/m/d',
         'autoclose': true
     });
 

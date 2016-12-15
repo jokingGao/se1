@@ -27,7 +27,7 @@ if(!$db)
 }
 
 if($email == null)
-	echo"<script>alert('you have to log in first!');location.href='login.php';</script>";
+  echo"<script>alert('you have to log in first!');location.href='login.php';</script>";
 
 if(isset($_POST["submit"]))
 {
@@ -59,7 +59,7 @@ if(isset($_POST["submit"]))
 
 <!-- Contact Form - START -->
 <div class="container">
-	<div class="row">
+  <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <div class="well well-sm">
           <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
@@ -82,7 +82,7 @@ if(isset($_POST["submit"]))
           </form>
         </div>
       </div>
-	</div>
+  </div>
 </div>
 
 <style>

@@ -132,7 +132,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i> User profile</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -197,22 +197,35 @@
                         <div class="panel-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#home" data-toggle="tab"><i class="fa fa-edit fa-fw"></i> Based on goal</a>
+                                <li class="active"><a href="#goal" data-toggle="tab"><i class="fa fa-edit fa-fw"></i> Based on goal</a>
                                 </li>
-                                <li><a href="#profile" data-toggle="tab"><i class="fa fa-calendar-o fa-fw"></i> Based on plan</a>
+                                <li><a href="#plan" data-toggle="tab"><i class="fa fa-calendar-o fa-fw"></i> Based on plan</a>
+                                </li>
+                                <li><a href="#friends" data-toggle="tab"><i class="fa fa-facebook-square fa-fw"></i> Based on friends</a>
+                                </li>
+                                <li><a href="#fitbit" data-toggle="tab"><i class="fa fa-circle-o fa-fw"></i> Based on fitbit</a>
                                 </li>
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane fade in active" id="home">
-                                    <h4>Home Tab</h4>
+                                <div class="tab-pane fade in active" id="goal">
+                                    <h4>Suggestions based on goal</h4>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                                 </div>
-                                <div class="tab-pane fade" id="profile">
-                                    <h4>Profile Tab</h4>
+                                <div class="tab-pane fade" id="plan">
+                                    <h4>Suggestions based on plan</h4>
                                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                                 </div>
+                                <div class="tab-pane fade" id="friends">
+                                    <h4>Suggestions based on friends</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                </div>
+                                <div class="tab-pane fade" id="fitbit">
+                                    <h4>Suggestions based on fitbit</h4>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                </div>
+
                             </div>
                         </div>
                         <!-- /.panel-body -->

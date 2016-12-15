@@ -1,22 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 4.5.2
 -- http://www.phpmyadmin.net
 --
--- 主机: localhost
--- 生成日期: 2016 年 12 月 14 日 02:36
--- 服务器版本: 5.1.53
--- PHP 版本: 5.3.4
+-- Host: localhost
+-- Generation Time: 2016-12-15 08:04:47
+-- 服务器版本： 10.1.19-MariaDB
+-- PHP Version: 5.6.28
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库: `se1`
+-- Database: `se1`
 --
 
 -- --------------------------------------------------------
@@ -25,27 +26,28 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- 表的结构 `account`
 --
 
-CREATE TABLE IF NOT EXISTS `account` (
-  `ID` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `account` (
+  `ID` int(255) NOT NULL,
   `UserName` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `EmailAdd` varchar(255) NOT NULL,
   `FirstName` varchar(255) NOT NULL,
   `LastName` varchar(255) NOT NULL,
+  `Gender` varchar(255) NOT NULL,
   `Age` int(255) NOT NULL,
   `Weight` double NOT NULL,
   `Height` double NOT NULL,
   `hasFitbit` tinyint(1) NOT NULL,
-  `Messages` varchar(2000) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=armscii8 AUTO_INCREMENT=2 ;
+  `Messages` varchar(2000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=armscii8;
 
 --
 -- 转存表中的数据 `account`
 --
 
-INSERT INTO `account` (`ID`, `UserName`, `Password`, `EmailAdd`, `FirstName`, `LastName`, `Age`, `Weight`, `Height`, `hasFitbit`, `Messages`) VALUES
-(1, 'sheetz', '123', 'yangs_uestc@163.com', 'Shang', 'Yang', 23, 176.3, 68.5, 1, 'hello');
+INSERT INTO `account` (`ID`, `UserName`, `Password`, `EmailAdd`, `FirstName`, `LastName`, `Gender`, `Age`, `Weight`, `Height`, `hasFitbit`, `Messages`) VALUES
+(1, 'sheetz', '123', 'yangs_uestc@163.com', 'Shang', 'Yang', '', 23, 176.3, 68.5, 1, 'hello'),
+(2, '', '123', '123@gmail.com', '', '', '', 22, 140, 70, 0, '');
 
 -- --------------------------------------------------------
 
@@ -53,17 +55,47 @@ INSERT INTO `account` (`ID`, `UserName`, `Password`, `EmailAdd`, `FirstName`, `L
 -- 表的结构 `plan`
 --
 
-CREATE TABLE IF NOT EXISTS `plan` (
+CREATE TABLE `plan` (
   `EmailAdd` varchar(255) CHARACTER SET armscii8 NOT NULL,
   `StartDate` date NOT NULL,
   `StartTime` time NOT NULL,
   `EndDate` date NOT NULL,
   `EndTime` time NOT NULL,
-  `Body` varchar(255) CHARACTER SET armscii8 NOT NULL,
-  PRIMARY KEY (`EmailAdd`)
+  `Body` varchar(255) CHARACTER SET armscii8 NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- 转存表中的数据 `plan`
 --
 
+INSERT INTO `plan` (`EmailAdd`, `StartDate`, `StartTime`, `EndDate`, `EndTime`, `Body`) VALUES
+('123@gmail.com', '2016-12-15', '21:00:00', '2016-12-15', '22:00:00', 'Breast,Back,Shoulder,Abs,Gluteus');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `plan`
+--
+ALTER TABLE `plan`
+  ADD PRIMARY KEY (`EmailAdd`);
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `account`
+--
+ALTER TABLE `account`
+  MODIFY `ID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

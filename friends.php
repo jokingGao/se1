@@ -132,7 +132,7 @@
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User profile</a>
+                        <li><a href="profile.php"><i class="fa fa-user fa-fw"></i> User profile</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -184,6 +184,34 @@
                     <h1 class="page-header"> <i class="fa fa-facebook"></i> Friends</h1>
                 </div>
                 <!-- /.col-lg-12 -->
+                <div class="col-lg-4">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            <i class="fa fa-facebook-square"></i> Friends Info
+                        </div>
+                        <div class="panel-body">
+                            <h4><i class="fa fa-github-alt"></i> Matched Friends: </h4>
+                            <h5 class="text-danger"> Shang Yang </h5>
+                            <h5 class="text-danger"> Shengming Liang </h5>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <!-- /.col-lg-4 -->
+                </div>
+                <div class="col-lg-8">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-circle-o"></i> Nearby
+                        </div>
+                        <div class="panel-body">
+                            <div id="map" style="width:600px;height:500px;"></div>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
+                    </div>
+                    <!-- /.col-lg-8 -->
+                </div>
             </div>
             <!-- /.row -->
         </div>
@@ -208,6 +236,15 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="scripts/sb-admin-2.js"></script>
+
+    <!-- Map -->
+    <script src="scripts/map.js"></script>
+    <style type="text/css">
+            div#map { margin: 0 auto 0 auto; }
+    </style>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdaezwONOepDO5aOOFYdnh7gdSaVHuYuU&libraries=places&callback=initMap">
+    </script>
 
 </body>
 
