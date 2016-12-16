@@ -43,6 +43,7 @@
 </head>
 
 <body>
+
 <?php
 
 // Connect to the database
@@ -57,43 +58,14 @@ if(!$db)
 }
 
 $result = mysql_query("SELECT * from plan where EmailAdd='$email'");
+
+$rowSQL = mysql_query( "SELECT MAX( PlanNum ) AS max FROM plan ;" );
+$row = mysql_fetch_array( $rowSQL );
+$largestNumber = $row['max'];
+
 $value = mysql_fetch_assoc($result);
 
-if(isset($_POST["submit"]))
-{
-  if ($_SERVER["REQUEST_METHOD"] == "POST")
-  { 
-    if(@$_POST["StartDate"] != null){    
-    $StartDate=$_POST["StartDate"];
-    mysql_query("UPDATE plan SET StartDate='$StartDate' WHERE EmailAdd='$email'");
-    }
-    if(@$_POST["StartTime"] != null){    
-    $StartTime=$_POST["StartTime"];
-    mysql_query("UPDATE plan SET StartTime='$StartTime' WHERE EmailAdd='$email'");
-    }
-    if(@$_POST["EndTime"] != null){
-    $EndTime=$_POST["EndTime"];
-    mysql_query("UPDATE plan SET EndTime='$EndTime' WHERE EmailAdd='$email'");
-    }
-    if(@$_POST["EndDate"] != null){
-    $EndDate=$_POST["EndDate"];
-    mysql_query("UPDATE plan SET EndDate='$EndDate' WHERE EmailAdd='$email'");
-    }
 
-    //Body checkbox
-    if(@$_POST["Body"] != null){
-
-    $result = "";
-    foreach ($_POST["Body"] as $i) {
-        //$result .= $i;
-        $result = implode(",",$_POST["Body"]);
-    }
-
-    mysql_query("UPDATE plan SET Body='$result' WHERE EmailAdd='$email'");
-    }
-
-  }
-}
 ?>
     <div id="wrapper">
 
@@ -293,10 +265,54 @@ if(isset($_POST["submit"]))
                                             </label>
                                         </div>
 
-                                        <button type="submit" class="btn btn-default" name="submit">Submit</button>
+                                        <button type="submit" class="btn btn-default" name="submit" >Submit</button>
                                         <button type="reset" class="btn btn-default">Reset</button>
                                     </form>
                                     <!--/.plan form -->
+
+                                    <?php  
+                                    if(isset($_POST["submit"]))
+                                    {
+                                      if ($_SERVER["REQUEST_METHOD"] == "POST")
+                                      { 
+                                        $maxNum = $largestNumber + 1; 
+                                        //mysql_query("INSERT INTO plan VALUES('$email', '$maxNum', 'null', 'null', 'null', 'null', 'null')");
+
+                                        if(@$_POST["StartDate"] != null){    
+                                            $StartDate=$_POST["StartDate"];
+                                            //mysql_query("UPDATE plan SET StartDate='$StartDate' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
+                                        }
+                                        if(@$_POST["StartTime"] != null){    
+                                            $StartTime=$_POST["StartTime"];
+                                            //mysql_query("UPDATE plan SET StartTime='$StartTime' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
+                                        }
+                                        if(@$_POST["EndTime"] != null){
+                                            $EndTime=$_POST["EndTime"];
+                                            //mysql_query("UPDATE plan SET EndTime='$EndTime' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
+                                        }
+                                        if(@$_POST["EndDate"] != null){
+                                            $EndDate=$_POST["EndDate"];
+                                            //mysql_query("UPDATE plan SET EndDate='$EndDate' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
+                                        }
+
+                                        //Body checkbox
+                                        if(@$_POST["Body"] != null){
+
+                                            $result = "";
+                                            foreach ($_POST["Body"] as $i) {
+                                                $result = implode(",",$_POST["Body"]);
+                                            }
+
+                                            //mysql_query("UPDATE plan SET Body='$result' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
+                                        }
+
+                                        mysql_query("INSERT INTO plan VALUES('$email', '$maxNum', '$StartDate', '$StartTime', '$EndDate', '$EndTime', '$result')");
+                                    }
+                                }
+                                ?>
+
+
+
                                 </div>
                             </div>
                             <!-- /.row (nested) -->
@@ -312,84 +328,67 @@ if(isset($_POST["submit"]))
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <ul class="timeline">
-                                <li>
+                                
+                                <?php 
+                                    for($i = 1; $i < $largestNumber+1; $i++){
+                                    $rst = mysql_query("SELECT * from plan where EmailAdd='$email' AND PlanNum='$i'");
+                                    $v = mysql_fetch_assoc($rst);
+                                        if($i % 2 == 0){
+                                ?>
+                                <li class="timeline-inverted">
                                     <div class="timeline-badge danger"><i class="fa fa-check"></i>
                                     </div>
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
-                                            <h4 class="timeline-title">Assignment 1</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from <?php  echo $value['StartDate']; echo " "; echo $value['StartTime'];?> to <?php  echo $value['EndDate']; echo " "; echo $value['EndTime'];?></small>
+                                            <h4 class="timeline-title">Assignment <?php echo $i; ?></h4>
+                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from <?php  echo $v['StartDate']; echo " "; echo $v['StartTime'];?> to <?php  echo $v['EndDate']; echo " "; echo $v['EndTime'];?></small>
                                             </p>
                                         </div>
                                         <div class="timeline-body">
                                             <ul>
                                                 <?php  
-                                                    $array = explode(',', $value['Body']);
-                                                    foreach ($array as $i) {
+                                                    $array = explode(',', $v['Body']);
+                                                    foreach ($array as $j) {
                                                         echo "<li>";
-                                                        echo $i;
+                                                        echo $j;
                                                         echo "</li>";
                                                     }
                                                 ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php }else{
 
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
+                                ?>
+
+                                <li class="timeline">
                                     <div class="timeline-badge danger"><i class="fa fa-check"></i>
                                     </div>
                                     <div class="timeline-panel">
                                         <div class="timeline-heading">
-                                            <h4 class="timeline-title">Assignment 1</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from to</small>
+                                            <h4 class="timeline-title">Assignment <?php echo $i; ?></h4>
+                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from <?php  echo $v['StartDate']; echo " "; echo $v['StartTime'];?> to <?php  echo $v['EndDate']; echo " "; echo $v['EndTime'];?></small>
                                             </p>
                                         </div>
                                         <div class="timeline-body">
                                             <ul>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
+                                                <?php  
+                                                    $array = explode(',', $v['Body']);
+                                                    foreach ($array as $j) {
+                                                        echo "<li>";
+                                                        echo $j;
+                                                        echo "</li>";
+                                                    }
+                                                ?>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="timeline-badge danger"><i class="fa fa-check"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Assignment 1</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from to</small>
-                                            </p>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <ul>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge danger"><i class="fa fa-check"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Assignment 1</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> from to</small>
-                                            </p>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <ul>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
-                                                <li>List Item</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
+
+
+                                <?php }} ?>
+                                
                                 
                                 
                             </ul>
