@@ -1,4 +1,38 @@
 <?php session_start();
+require_once('FitbitClient.class.php');
+
+if (isset($_GET['logout'])) {
+   session_destroy();
+   session_start();
+}
+
+if ((!isset($_SESSION['authFitbit']) || $_SESSION['authFitbit'] != 1) && isset($_REQUEST['code'])) {
+   // Callback
+   $fclient = new FitbitClient($_REQUEST['code']);
+   $_SESSION['parameters'] = $fclient->getParameters();
+   $_SESSION['authFitbit'] = 1;
+}
+
+if ((!isset($_SESSION['authFitbit']) || $_SESSION['authFitbit'] != 1)) {
+   // First connection
+   FitbitClient::getAuthorizationCode();
+}
+
+if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
+   // Standard mode
+   $fclient = new FitbitClient();
+   $fclient->setParameters($_SESSION['parameters']);
+
+   //print_r($fclient->getUserProfile());
+   $userProfile = $fclient->getUserProfile();
+   $user_weight = $userProfile[user][weight];
+   $user_height = $userProfile[user][height];
+   $BMI = $user_weight/($user_height*$user_height/10000);
+   $_SESSION['BMI'] = $BMI;
+   print_r($BMI);
+   echo '<br />';
+   //print_r($fclient->getHeartRateIntraday());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
