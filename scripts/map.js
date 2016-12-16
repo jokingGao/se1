@@ -63,7 +63,6 @@ var map;
       }
 
       function createMarker(place) {
-        var placeLoc = place.geometry.location;
         var marker = new google.maps.Marker({
           map: map,
           animation: google.maps.Animation.DROP,
@@ -71,12 +70,37 @@ var map;
         });
          marker.addListener('click', function(){
             if (marker.getAnimation() !== null) {
-            marker.setAnimation(null);
-        } else {
+            marker.setAnimation(null); }
+            else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
-            infowindow.setContent(place.name);
+            var service = new google.maps.places.PlacesService(map);
+            service.getDetails({
+              placeId: place.place_id
+              }, function(place) {
+                if(place.opening_hours == null){
+                  infowindow.setContent('<div><strong><h4>' + place.name + '</h4></strong><br>'
+                  + place.formatted_address + '<br>' + 'Sorry, place opening hours not specify.' + '</div>');
+                }
+                else{
+                  var d = new Date();
+                  var n = d.getDay();
+                  infowindow.setContent('<div><strong><h4>' + place.name + '</h4></strong><br>'
+                  + place.formatted_address + '<br>' + 
+                  "Today's opening hours:  " + '<strong>' +
+                  place.opening_hours.periods[n].open.time.substring(0,2) + ':' +  place.opening_hours.periods[n].open.time.substring(2) + ' - ' +
+                  place.opening_hours.periods[n].close.time.substring(0,2) + ':' +  place.opening_hours.periods[n].close.time.substring(2) 
+                  + '</strong><br>' +
+                  '</div>');
+                }               
+              });
             infowindow.open(map, this);
-        }
-         });
+            stopAnimation(marker);
+          }
+        });
+       }
+
+      function stopAnimation(marker) {
+        setTimeout(function () {
+        marker.setAnimation(null);
+      }, 2000);
       }
-    
