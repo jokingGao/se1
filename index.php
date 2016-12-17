@@ -1,9 +1,9 @@
 <?php session_start();
-@$step_today = $_SESSION['STEP'];
-@$calory_today = $_SESSION['CALORY'];
-@$distance_today = $_SESSION['DISTANCE'];
-@$active_today = $_SESSION['ACTIVE'];
-@$sleep_today = $_SESSION['SLEEP'];
+//@$step_today = $_SESSION['STEP'];
+//@$calory_today = $_SESSION['CALORY'];
+//@$distance_today = $_SESSION['DISTANCE'];
+//@$active_today = $_SESSION['ACTIVE'];
+//@$sleep_today = $_SESSION['SLEEP'];
 require_once('FitbitClient.class.php');
 
 if (isset($_GET['logout'])) {
@@ -44,7 +44,7 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
    echo '<br />';
    echo '<br />';
    $step_today = $_SESSION['Steps']['activities-steps']['30']['value'];
-   $_SESSION['STEP'] = $step_today;
+   //$_SESSION['STEP'] = $step_today;
    print_r($step_today);
 
    //Calories
@@ -53,7 +53,7 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
    echo '<br />';
    echo '<br />';
    $calory_today = $_SESSION['Calories']['activities-calories']['30']['value'];
-   $_SESSION['CALORY'] = $calory_today;
+   //$_SESSION['CALORY'] = $calory_today;
    print_r($calory_today);
 
    //Distance
@@ -62,7 +62,7 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
    echo '<br />';
    echo '<br />';
    $distance_today = $_SESSION['Distances']['activities-distance']['30']['value'];
-   $_SESSION['DISTANCE'] = $distance_today;
+   //$_SESSION['DISTANCE'] = $distance_today;
    print_r($distance_today);
 
    //LightlyActive
@@ -94,7 +94,7 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
    //ActiveMinute_today
    echo '<br />';
    $active_today = $activelightly_today + $activefairly_today + $activevery_today;
-   $_SESSION['ACTIVE'] = $active_today;
+   //$_SESSION['ACTIVE'] = $active_today;
    print_r($active_today);
 
    //SleepMinute_today
@@ -103,7 +103,7 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
    echo '<br />';
    echo '<br />';
    $sleep_today = $_SESSION['Sleep']['sleep-minutesAsleep']['30']['value'];
-   $_SESSION['SLEEP'] = $sleep_today;
+   //$_SESSION['SLEEP'] = $sleep_today;
    print_r($sleep_today);
 }
 ?>
