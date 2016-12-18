@@ -1,6 +1,5 @@
 <?php session_start();
 @$BMI = $_SESSION['BMI'];
-echo "BMI = ",$BMI;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -225,7 +224,22 @@ echo "BMI = ",$BMI;
                                 </div>
                                 <div class="tab-pane fade" id="fitbit">
                                     <h4>Suggestions based on fitbit</h4>
-                                    <p><?php print_r($BMI) ?> </p>
+                                    <p><?php echo "Your BMI = $BMI\n";
+                                    if ($BMI>25) {
+                                        echo "You are fat";
+                                    }
+                                    elseif ($BMI<=25&&$BMI>18.5) {
+                                        echo "You are normal";
+                                    }
+                                    elseif ($BMI<=18.5) {
+                                        echo "You are thin";
+                                    }
+                                    else
+                                    {
+                                        echo "You are not human!";
+                                    }
+                                     ?> </p>
+                                    
                                 </div>
 
                             </div>

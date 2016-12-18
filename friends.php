@@ -1,4 +1,5 @@
 <?php session_start();
+@$email = $_SESSION["adminemail"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +39,21 @@
 </head>
 
 <body>
+
+<?php
+
+// Connect to the database
+$conn = @mysql_connect("localhost","root","");
+if (!$conn){
+    die("Failed to connect database£º" . mysql_error());
+}
+$db=mysql_select_db("se1", $conn);
+if(!$db)
+{
+  die("Failed to connect to MySQL:". mysql_error());
+}
+echo "database connected";
+?>
 
     <div id="wrapper">
 
@@ -193,25 +209,80 @@
                             <h4><i class="fa fa-github-alt"></i> Matched Friends: </h4>
                             <h5 class="text-danger"> Shang Yang </h5>
                             <h5 class="text-danger"> Shengming Liang </h5>
+                            <br>
+                            <h4><i class="fa fa-github-alt"></i> To do list: </h4>
+                            <h5 class="text-danger"> Lulu Jiang <button type="button" class="btn btn-outline btn-success pull-right">Accept</button></h5>
                         </div>
                         <div class="panel-footer">
                         </div>
                     </div>
                     <!-- /.col-lg-4 -->
                 </div>
+
                 <div class="col-lg-8">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <i class="fa fa-circle-o"></i> Nearby
+                            <i class="fa fa-circle-o"></i> Nearby  
                         </div>
                         <div class="panel-body">
-                            <div id="map" style="width:600px;height:500px;"></div>
+                            <h4><i class="fa fa-github-alt"></i> Nearby Friends: </h4>
+                            <br>
+                            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                            <h4 class="text-danger"> Shang Yang </button> <button type="button" class="btn btn-outline btn-danger pull-right" name="send" value="1" >Send Request</button></h5>
+                            <br>
+                            <h4 class="text-danger"> Shengming </button> <button type="button" class="btn btn-outline btn-info pull-right btn-primary" data-toggle="modal" data-target="#mymodal-data">info</button></h5>
+                            </form>
+                            
+                            <div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySnallModalLabel" aria-didden="true">
+                                <div class="modal-dialog">
+                                   <div class="modal-content">
+                                       <div class="modal-header">
+                                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                           <h4 class="modal-title">模态弹出窗标题</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                           <p>模态弹出窗主体内容</p>
+                                            <div class="panel panel-red">
+                                                <div class="panel-heading">
+                                                    <i class="fa fa-facebook-square"></i> Friends Info
+                                                </div>
+                                                <div class="panel-body">
+                                                    <h4><i class="fa fa-github-alt"></i> Matched Friends: </h4>
+                                                    <h5 class="text-danger"> Shang Yang </h5>
+                                                    <h5 class="text-danger"> Shengming Liang </h5>
+                                                    <br>
+                                            </div>
+                                       </div>
+                                       <div class="modal-footer">
+                                           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                           <button type="button" class="btn btn-primary">保存</button>
+                                       </div>
+                                   </div>
+                               </div>
+                            </div>
+
+
+                            <?php  
+                                if(isset($_POST["send"]))
+                                {
+                                    echo "request sent";
+                                    if ($_SERVER["REQUEST_METHOD"] == "POST")
+                                    {
+                                        if(@$_POST["send"] = "1"){    
+                                            $Send=$_POST["send"];
+                                            mysql_query("UPDATE friend SET Send='$Send' WHERE EmailAdd='$email'");
+                                        }
+                                    }
+                                }
+                            ?>
+
                         </div>
-                        <div class="panel-footer">
-                        </div>
+                        
                     </div>
                     <!-- /.col-lg-8 -->
                 </div>
+
+
             </div>
             <!-- /.row -->
         </div>

@@ -57,13 +57,12 @@ if(!$db)
   die("Failed to connect to MySQL:". mysql_error());
 }
 
-$result = mysql_query("SELECT * from plan where EmailAdd='$email'");
 
 $rowSQL = mysql_query( "SELECT MAX( PlanNum ) AS max FROM plan ;" );
 $row = mysql_fetch_array( $rowSQL );
 $largestNumber = $row['max'];
 
-$value = mysql_fetch_assoc($result);
+
 
 
 ?>
@@ -275,42 +274,35 @@ $value = mysql_fetch_assoc($result);
                                     {
                                       if ($_SERVER["REQUEST_METHOD"] == "POST")
                                       { 
-                                        $maxNum = $largestNumber + 1; 
-                                        //mysql_query("INSERT INTO plan VALUES('$email', '$maxNum', 'null', 'null', 'null', 'null', 'null')");
+                                        $maxNum = $largestNumber + 1;
 
                                         if(@$_POST["StartDate"] != null){    
                                             $StartDate=$_POST["StartDate"];
-                                            //mysql_query("UPDATE plan SET StartDate='$StartDate' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
                                         }
                                         if(@$_POST["StartTime"] != null){    
                                             $StartTime=$_POST["StartTime"];
-                                            //mysql_query("UPDATE plan SET StartTime='$StartTime' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
                                         }
                                         if(@$_POST["EndTime"] != null){
                                             $EndTime=$_POST["EndTime"];
-                                            //mysql_query("UPDATE plan SET EndTime='$EndTime' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
                                         }
                                         if(@$_POST["EndDate"] != null){
                                             $EndDate=$_POST["EndDate"];
-                                            //mysql_query("UPDATE plan SET EndDate='$EndDate' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
                                         }
 
                                         //Body checkbox
                                         if(@$_POST["Body"] != null){
 
-                                            $result = "";
+                                            $BodyArray = "";
                                             foreach ($_POST["Body"] as $i) {
-                                                $result = implode(",",$_POST["Body"]);
+                                                $BodyArray = implode(",",$_POST["Body"]);
                                             }
 
-                                            //mysql_query("UPDATE plan SET Body='$result' WHERE EmailAdd='$email' AND PlanNum='maxNum'");
                                         }
-
-                                        mysql_query("INSERT INTO plan VALUES('$email', '$maxNum', '$StartDate', '$StartTime', '$EndDate', '$EndTime', '$result')");
+                                        mysql_query("INSERT INTO plan VALUES('$email', '$maxNum', '$StartDate', '$StartTime', '$EndDate', '$EndTime', '$BodyArray')");
+                                        
+                                      }
                                     }
-                                }
                                 ?>
-
 
 
                                 </div>

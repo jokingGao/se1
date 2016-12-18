@@ -130,6 +130,34 @@ class FitbitClient {
 	     return $this->getResources(HOST.'1/user/-/profile.json');
       }
 
+      public function getUserSteps() {
+            return $this->getResources(HOST.'1/user/-/activities/steps/date/today/1m.json');
+      }
+
+      public function getUserCalories() {
+            return $this->getResources(HOST.'1/user/-/activities/calories/date/today/1m.json');
+      }
+
+      public function getUserDistances() {
+            return $this->getResources(HOST.'1/user/-/activities/distance/date/today/1m.json');
+      }
+
+      public function getUserActiveLightly() {
+            return $this->getResources(HOST.'1/user/-/activities/minutesLightlyActive/date/today/1m.json');
+      }
+
+      public function getUserActiveFairly() {
+            return $this->getResources(HOST.'1/user/-/activities/minutesFairlyActive/date/today/1m.json');
+      }
+
+      public function getUserActiveVery() {
+            return $this->getResources(HOST.'1/user/-/activities/minutesVeryActive/date/today/1m.json');
+      }
+
+      public function getUserSleep() {
+            return $this->getResources(HOST.'1/user/-/sleep/minutesAsleep/date/today/1m.json');
+      }
+
       /**
       * \fn getHeartrateIntraday() return today user heartrate serie
       * \return array with today user heartrate serie
