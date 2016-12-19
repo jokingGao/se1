@@ -30,12 +30,12 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
 
    //print_r($fclient->getUserProfile());
    $userProfile = $fclient->getUserProfile();
-   $user_weight = $userProfile[user][weight];
-   $user_height = $userProfile[user][height];
+   $user_weight = $userProfile['user']['weight'];
+   $user_height = $userProfile['user']['height'];
    $BMI = $user_weight/($user_height*$user_height/10000);
+   $avgStep = $userProfile['user']['averageDailySteps'];
    $_SESSION['BMI'] = $BMI;
-   print_r($BMI);
-   echo '<br />';
+   $_SESSION['avgStep'] = $avgStep;
    //print_r($fclient->getHeartRateIntraday());
 
    //Step
