@@ -224,8 +224,8 @@ $largestNumber = $row['max'];
                                         <h4><i class="fa fa-clock-o"></i> Please select a time: </h4>
                                         <p id="basicExample">
                                             <input type="text" class="date start" name="StartDate" />
-                                            <input type="text" class="time start ui-timepicker-input" name="StartTime" /> to
-                                            <input type="text" class="time end ui-timepicker-input" name="EndTime" />
+                                            <input type="text" class="time start" name="StartTime" /> to
+                                            <input type="text" class="time end" name="EndTime" />
                                             <input type="text" class="date end" name="EndDate" />
                                         </p>
                                         <br>
@@ -264,8 +264,8 @@ $largestNumber = $row['max'];
                                             </label>
                                         </div>
 
-                                        <button type="submit" class="btn btn-default" name="submit" >Submit</button>
-                                        <button type="reset" class="btn btn-default">Reset</button>
+                                        <button type="submit" class="btn btn-primary" name="submit" >Submit</button>
+                                        <button type="reset" class="btn btn-warning">Reset</button>
                                     </form>
                                     <!--/.plan form -->
 
@@ -298,12 +298,11 @@ $largestNumber = $row['max'];
                                             }
 
                                         }
-                                        mysql_query("INSERT INTO plan VALUES('$email', '$maxNum', '$StartDate', '$StartTime', '$EndDate', '$EndTime', '$BodyArray')");
+                                        mysql_query("INSERT INTO plan VALUES('', '$email', '$maxNum', '$StartDate', '$StartTime', '$EndDate', '$EndTime', '$BodyArray')");
                                         
                                       }
                                     }
                                 ?>
-
 
                                 </div>
                             </div>
@@ -320,8 +319,21 @@ $largestNumber = $row['max'];
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <ul class="timeline">
-                                
                                 <?php 
+                                // Connect to the database
+                                        $conn = @mysql_connect("localhost","root","");
+                                        if (!$conn){
+                                            die("Failed to connect database£º" . mysql_error());
+                                        }
+                                        $db=mysql_select_db("se1", $conn);
+                                        if(!$db)
+                                        {
+                                          die("Failed to connect to MySQL:". mysql_error());
+                                        }
+                                      $rowSQL = mysql_query( "SELECT MAX( PlanNum ) AS max FROM plan ;" );
+                                      $row = mysql_fetch_array( $rowSQL );
+                                      $largestNumber = $row['max'];
+
                                     for($i = 1; $i < $largestNumber+1; $i++){
                                     $rst = mysql_query("SELECT * from plan where EmailAdd='$email' AND PlanNum='$i'");
                                     $v = mysql_fetch_assoc($rst);
