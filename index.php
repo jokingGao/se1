@@ -120,10 +120,10 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
 
    $_SESSION['Goals'] = $fclient->getUserGoal();
    //print_r($_SESSION['Goals']);
-   $goal_active = $_SESSION['Goals'][goals][activeMinutes];
-   $goal_calory = $_SESSION['Goals'][goals][caloriesOut];
-   $goal_distance = $_SESSION['Goals'][goals][distance];
-   $goal_step = $_SESSION['Goals'][goals][steps];
+   $goal_active = $_SESSION['Goals']['goals']['activeMinutes'];
+   $goal_calory = $_SESSION['Goals']['goals']['caloriesOut'];
+   $goal_distance = $_SESSION['Goals']['goals']['distance'];
+   $goal_step = $_SESSION['Goals']['goals']['steps'];
    /*
    print_r($goal_step);
    print_r($goal_calory);

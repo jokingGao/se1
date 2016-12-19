@@ -40,6 +40,21 @@
 
 <body>
 
+<script>
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(redirectToPosition);
+    } else { 
+        //x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function redirectToPosition(position) {
+    window.location='friends.php?lat='+position.coords.latitude+'&long='+position.coords.longitude;
+}
+</script>
 <?php
 
 // Connect to the database
@@ -52,8 +67,42 @@ if(!$db)
 {
   die("Failed to connect to MySQL:". mysql_error());
 }
-echo "database connected";
+
+$lat=(isset($_GET['lat']))?$_GET['lat']:'';
+$long=(isset($_GET['long']))?$_GET['long']:'';
+
+if($lat<>0){
+mysql_query("UPDATE account SET Longitude='$long' WHERE EmailAdd='$email'");
+mysql_query("UPDATE account SET Latitude='$lat' WHERE EmailAdd='$email'");
+}
+
+$result = mysql_query("SELECT * from account where EmailAdd='$email'");
+
+$value = mysql_fetch_assoc($result);
+$lowWeight = $value['Weight'] - 10;
+$highWeight = $value['Weight'] + 10;
+$lowHight = $value['Height'] - 2;
+$highHight = $value['Height'] + 2;
+$lowLat = $value['Latitude'] - 0.2;
+$highLat = $value['Latitude'] + 0.2;
+$lowLong = $value['Longitude'] - 0.2;
+$highLong = $value['Longitude'] + 0.2;
+
+$selected = mysql_query("SELECT * from account WHERE (Weight<$highWeight AND Weight>$lowWeight) AND 
+(Height<$highHight AND Height>$lowHight) AND (Latitude<$highLat AND Latitude>$lowLat) AND (Longitude<$highLong AND Longitude>$lowLong) AND EmailAdd <> '$email'");
+
+if (mysql_num_rows($selected) == 0) {
+    echo "No recommended friends";
+}
+
+/*while ($row = mysql_fetch_assoc($selected)) {
+    echo $row["EmailAdd"];
+}*/
+
 ?>
+
+
+
 
     <div id="wrapper">
 
@@ -76,7 +125,12 @@ echo "database connected";
                         <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
-                        <li>
+                        
+						
+						
+						
+						
+						<!-- <li>
                             <a href="#">
                                 <div>
                                     <strong>John Smith</strong>
@@ -86,7 +140,7 @@ echo "database connected";
                                 </div>
                                 <div>lulu</div>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="divider"></li>
                         <li>
                             <a href="#">
@@ -206,83 +260,187 @@ echo "database connected";
                             <i class="fa fa-facebook-square"></i> Friends Info
                         </div>
                         <div class="panel-body">
-                            <h4><i class="fa fa-github-alt"></i> Matched Friends: </h4>
-                            <h5 class="text-danger"> Shang Yang </h5>
-                            <h5 class="text-danger"> Shengming Liang </h5>
-                            <br>
+                            
+							
+							<!--Show to do list-->
                             <h4><i class="fa fa-github-alt"></i> To do list: </h4>
-                            <h5 class="text-danger"> Lulu Jiang <button type="button" class="btn btn-outline btn-success pull-right">Accept</button></h5>
+                            <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+							<?php 
+							$requestList=mysql_query("SELECT * FROM friend WHERE EmailAdd='$email'");
+							$requestValue=mysql_fetch_assoc($requestList);
+							$requestArray = explode(',',$requestValue['Request']);
+							foreach($requestArray as $eachrequest)
+							{
+								$IDresult = mysql_query("SELECT * from account where ID='$eachrequest'");
+								$IDvalue = mysql_fetch_assoc($IDresult);
+						        $firstnameValue=$IDvalue['FirstName'];
+								$LastnameValue=$IDvalue['LastName'];
+							?>
+							
+							<h4 class="text-danger"> 
+								<?php 
+								if($IDvalue['FirstName']<>null && $IDvalue['LastName']<>null)
+								{
+									echo $firstnameValue." ".$LastnameValue; 
+								?> 
+							
+							<button class="btn btn-outline btn-success pull-right" name="request" value="<?php echo $IDvalue['ID']?>" >Accept</button></h4>
+							<br>  
+							    <?php 
+								} 
+								?>
+							<?php
+							}
+							?>
+							</form>
+							
+							<!--button activity-->
+							<?php 
+                                if(isset($_POST["request"]))
+                                {
+                                    //echo "request sent";
+                                    if ($_SERVER["REQUEST_METHOD"] == "POST")
+                                    {
+                                        if(@$_POST["request"] != null){    
+                                            $RequestID=$_POST["request"];
+											$flag = 0;
+											$filter = mysql_query("SELECT * FROM friend WHERE EmailAdd = '$email'");
+											$val = mysql_fetch_assoc($filter);
+											$array = explode(',', $val['FriendList']);
+											foreach ($array as $j) {
+												if($j == $RequestID)
+													$flag = 1;
+											}
+											if($flag == 0)
+											{
+											mysql_query("UPDATE friend SET FriendList=concat(FriendList,'$RequestID,') WHERE EmailAdd='$email'");
+											mysql_query("UPDATE friend SET Request=replace(Request,'$RequestID,','') WHERE EmailAdd='$email'");
+											mysql_query("UPDATE friend SET Send=replace(FriendList,'$RequestID,','') WHERE ID='$RequestID'");
+											$resultID=mysql_query("SELECT * FROM account WHERE EmailAdd = '$email'");
+											$valueID=mysql_fetch_assoc($resultID);
+											$mineID=$valueID['ID'];
+											mysql_query("UPDATE friend SET FriendList=concat(FriendList,'$mineID,') WHERE ID='$RequestID'");
+											}
+                                        }
+                                    }
+                                }
+                            ?>
+							<!--Show to do list end-->
+							
+							<h4><i class="fa fa-github-alt"></i> Matched Friends: </h4>
+                            
+							<!--Show matched friends-->
+							<?php 
+							$friendsList=mysql_query("SELECT * FROM friend WHERE EmailAdd='$email'");
+							$friendValue=mysql_fetch_assoc($friendsList);
+							$friendArray = explode(',',$friendValue['FriendList']);
+							foreach($friendArray as $eachFriend)
+							{
+								$IDresult = mysql_query("SELECT * from account where ID='$eachFriend'");
+								$IDvalue = mysql_fetch_assoc($IDresult);
+						        $firstnameValue=$IDvalue['FirstName'];
+								$LastnameValue=$IDvalue['LastName'];
+								
+							?>
+							
+							<h4 class="text-danger"> <?php if($IDvalue['FirstName']<>null&&$IDvalue['LastName']<>null){echo $firstnameValue." ".$LastnameValue;}?></h4>
+							<br>
+							<?php 							
+							}
+							?>
+							<!--Show matched friends end-->
+							
                         </div>
                         <div class="panel-footer">
                         </div>
                     </div>
                     <!-- /.col-lg-4 -->
                 </div>
-
                 <div class="col-lg-8">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <i class="fa fa-circle-o"></i> Nearby  
+                            <i class="fa fa-circle-o"></i> Nearby
                         </div>
                         <div class="panel-body">
-                            <h4><i class="fa fa-github-alt"></i> Nearby Friends: </h4>
+                           <button type="button" class="btn btn-primary btn-lg btn-block" onclick="getLocation()">Get Your Recommended Users</button>
+						    <h4><i class="fa fa-github-alt"></i> Nearby Friends: </h4>
                             <br>
                             <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-                            <h4 class="text-danger"> Shang Yang </button> <button type="button" class="btn btn-outline btn-danger pull-right" name="send" value="1" >Send Request</button></h5>
-                            <br>
-                            <h4 class="text-danger"> Shengming </button> <button type="button" class="btn btn-outline btn-info pull-right btn-primary" data-toggle="modal" data-target="#mymodal-data">info</button></h5>
+							<?php while ($row = mysql_fetch_assoc($selected)) {
+								if (mysql_num_rows($selected) == 0) {
+								echo "No recommended friends";
+								}
+							?>
+                            <h4 class="text-danger"> <?php  echo $row["FirstName"] ." ". $row["LastName"]?>
+							<button  class="btn btn-outline btn-success pull-right" name="send" value="<?php echo $row['ID'] ?>">Send Request</button>
+                            <button type= "button" class="btn btn-outline btn-info pull-right btn-primary" data-toggle="modal" data-target="#mymodal-data" >info</button></h5>
+							<br>
+							<?php } ?>
                             </form>
                             
-                            <div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySnallModalLabel" aria-didden="true">
-                                <div class="modal-dialog">
-                                   <div class="modal-content">
-                                       <div class="modal-header">
-                                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                                           <h4 class="modal-title">模态弹出窗标题</h4>
-                                       </div>
-                                       <div class="modal-body">
-                                           <p>模态弹出窗主体内容</p>
-                                            <div class="panel panel-red">
-                                                <div class="panel-heading">
-                                                    <i class="fa fa-facebook-square"></i> Friends Info
-                                                </div>
-                                                <div class="panel-body">
-                                                    <h4><i class="fa fa-github-alt"></i> Matched Friends: </h4>
-                                                    <h5 class="text-danger"> Shang Yang </h5>
-                                                    <h5 class="text-danger"> Shengming Liang </h5>
-                                                    <br>
-                                            </div>
-                                       </div>
-                                       <div class="modal-footer">
-                                           <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                           <button type="button" class="btn btn-primary">保存</button>
-                                       </div>
-                                   </div>
-                               </div>
-                            </div>
-
-
                             <?php  
                                 if(isset($_POST["send"]))
                                 {
-                                    echo "request sent";
                                     if ($_SERVER["REQUEST_METHOD"] == "POST")
                                     {
-                                        if(@$_POST["send"] = "1"){    
+                                        if(@$_POST["send"] != null){    
                                             $Send=$_POST["send"];
-                                            mysql_query("UPDATE friend SET Send='$Send' WHERE EmailAdd='$email'");
+											$flag = 0;
+											$Request = $value['ID'];
+											$infoID = $_POST["send"];
+							                $infoResult = mysql_query("SELECT * FROM account WHERE ID = '$infoID'");
+							                $infoValue = mysql_fetch_assoc($infoResult);
+											$filter = mysql_query("SELECT * FROM friend WHERE EmailAdd = '$email'");
+											$val = mysql_fetch_assoc($filter);
+											$array = explode(',', $val['Send']);
+											foreach ($array as $j) {
+												if($j == $Send)
+													$flag = 1;
+											}
+											if($flag == 0)
+											{
+                                            mysql_query("UPDATE friend SET Send=concat(Send,'$Send,') WHERE EmailAdd='$email'");
+											mysql_query("UPDATE friend SET Request = concat(Request,'$Request,') WHERE ID = '$Send'");
+											}
                                         }
                                     }
                                 }
                             ?>
-
-                        </div>
                         
+						<div class="modal" id="mymodal-data" tabindex="-1" role="dialog" aria-labelledby="mySnallModalLabel" aria-didden="true">
+                                <div class="modal-dialog">
+                                   <div class="modal-content">
+                                       <div class="modal-header">
+                                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                           <h4 class="modal-title"><?php echo $infoValue['FirstName']." ".$infoValue['LastName'] ?></h4>
+                                       </div>
+                                       <div class="modal-body">
+                                            <div class="panel panel-red">
+                                                <div class="panel-heading">
+                                                    <i class="fa fa-facebook-square"></i> Users Info
+                                                </div>
+                                                <div class="panel-body">
+                                                    <h5 class="text-danger"> Gender: <?php echo $infoValue['Gender'] ?> </h5>
+                                                    <h5 class="text-danger"> Age: <?php echo $infoValue['Age'] ?> </h5>
+													<h5 class="text-danger"> Weight: <?php echo $infoValue['Weight'] ?> </h5>
+													<h5 class="text-danger"> Height: <?php echo $infoValue['Height'] ?> </h5>
+                                                    <br>
+												</div>
+                                            </div>
+                                       </div>
+									       <div class="modal-footer">
+                                           <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+										   </div>
+                                   </div>
+                               </div>
+                            </div>
+						
+						</div>
+                        <div class="panel-footer">
+                        </div>
                     </div>
                     <!-- /.col-lg-8 -->
                 </div>
-
-
             </div>
             <!-- /.row -->
         </div>
