@@ -158,6 +158,10 @@ class FitbitClient {
             return $this->getResources(HOST.'1/user/-/sleep/minutesAsleep/date/today/1m.json');
       }
 
+      public function getUserGoal() {
+            return $this->getResources(HOST.'1/user/-/activities/date/today.json');
+      }
+
       /**
       * \fn getHeartrateIntraday() return today user heartrate serie
       * \return array with today user heartrate serie
