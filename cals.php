@@ -1,4 +1,14 @@
 <?php session_start();
+@$data_step = $_SESSION['Data_step'];
+@$data_calory = $_SESSION['Data_calory'];
+@$data_distance = $_SESSION['Data_distance'];
+@$data_active1 = $_SESSION['Data_active1'];
+@$data_active2 = $_SESSION['Data_active2'];
+@$data_active3 = $_SESSION['Data_active3'];
+@$step_today = $_SESSION['stepT'];
+@$calory_today = $_SESSION['caloryT'];
+@$distance_today = $_SESSION['distanceT'];
+@$active_today = $_SESSION['activeT'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,6 +44,14 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="morris.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+    <script src="examples/lib/example.js"></script>
+    <!--<link rel="stylesheet" href="lib/example.css">-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+    <link rel="stylesheet" href="morris.css">
 
 </head>
 
@@ -192,7 +210,7 @@
                                     <i class="fa fa-arrows-h fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
+                                    <div class="huge"><?php echo "$step_today" ?></div>
                                     <div>steps</div>
                                 </div>
                             </div>
@@ -214,7 +232,7 @@
                                     <i class="fa fa-fire fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
+                                    <div class="huge"><?php echo "$calory_today" ?></div>
                                     <div>cals</div>
                                 </div>
                             </div>
@@ -236,7 +254,7 @@
                                     <i class="fa fa-map-marker fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
+                                    <div class="huge"><?php echo "$distance_today" ?></div>
                                     <div >miles</div>
                                 </div>
                             </div>
@@ -258,7 +276,7 @@
                                     <i class="fa fa-clock-o fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
+                                    <div class="huge"><?php echo "$active_today" ?></div>
                                     <div>Active mins</div>
                                 </div>
                             </div>
@@ -278,7 +296,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> One Week Calories
                             <div class="pull-right">
                                 <div class="btn-group">
                                     Calories
@@ -287,21 +305,27 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
-                            <div class="pull-right">
-                                Calories
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div id="morris-bar-chart"></div>
+                            <div id="graph2"></div>
+<script type="text/javascript">
+// Use Morris.Area instead of Morris.Line
+Morris.Bar({
+  element: 'graph2',
+  data: [
+    {x: '<?php echo $data_calory['24']['dateTime']; ?>', y: <?php echo $data_calory['24']['value']; ?>},
+    {x: '<?php echo $data_calory['25']['dateTime']; ?>', y: <?php echo $data_calory['25']['value']; ?>},
+    {x: '<?php echo $data_calory['26']['dateTime']; ?>', y: <?php echo $data_calory['26']['value']; ?>},
+    {x: '<?php echo $data_calory['27']['dateTime']; ?>', y: <?php echo $data_calory['27']['value']; ?>},
+    {x: '<?php echo $data_calory['28']['dateTime']; ?>', y: <?php echo $data_calory['28']['value']; ?>},
+    {x: '<?php echo $data_calory['29']['dateTime']; ?>', y: <?php echo $data_calory['29']['value']; ?>},
+    {x: '<?php echo $data_calory['30']['dateTime']; ?>', y: <?php echo $data_calory['30']['value']; ?>},
+  ],
+  xkey: 'x',
+  ykeys: ['y'],
+  labels: ['Calories']
+}).on('click', function(i, row){
+  console.log(i, row);
+});
+</script>
                         </div>
                         <!-- /.panel-body -->
                     </div>

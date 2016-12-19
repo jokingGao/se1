@@ -1,5 +1,16 @@
 <?php session_start();
 @$BMI = $_SESSION['BMI'];
+@$avgStep = $_SESSION['avgStep'];
+@$email = $_SESSION["adminemail"];
+$conn = @mysql_connect("localhost","root","");
+if (!$conn){
+    die("Failed to connect database£º" . mysql_error());
+}
+$db=mysql_select_db("se1", $conn);
+if(!$db)
+{
+  die("Failed to connect to MySQL:". mysql_error());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -216,7 +227,53 @@
                                 </div>
                                 <div class="tab-pane fade" id="plan">
                                     <h4>Suggestions based on plan</h4>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    <?php
+                                    //$userPlan = mysql_query(query)
+                                    $rst = mysql_query("SELECT * FROM `plan` where EmailAdd='$email' ORDER BY `plan`.`StartDate` DESC limit 1");
+                                    //$rst2 = mysql_query("SELECT max('Start-Date') as maxtime from plan where EmailAdd='$email'");
+                                    $v = mysql_fetch_assoc($rst);
+                                    $array = explode(',', $v['Body']);
+                                    foreach ($array as $j) {
+                                        echo "<li>";
+                                        echo $j;
+                                        echo "<br/>";
+                                        switch ($j) {
+                                            case 'Chest':
+                                                # code...
+                                                echo "The chest is made up of two muscles that work together to make the chest function. The muscle are the pectoralis major and pectoralis minor. Basically, the pectoralis minor is located directly underneath the pectoralis major. Overall, these chest muscles start at the clavicle and insert at the sternum and the armpit area (humerous).The three different functions of the chest muscles are the side arm pitching motion, the ability to bring your arm up and down at your sides, and the classic arm wresting motion. The basic recommended exercises for building up your chest include the bench press and flyes.";
+                                                break;
+                                            case 'Back':
+                                                # code...
+                                                echo "The most important thing to do on every rep of every set of every back workout is to squeeze it. Most of the time the reason you can't grow your back is because you can't feel it. Hold the contracted position of each back lift for one second and if you still can't feel your back working you are probably still performing the movement incorrectly.Your mind is just as important when lifting as your body is. Because you can't see your back working you have to imagine it working instead. Before you start your back workout start to visualize your exercises; pull-ups, pulldowns, rows (dumbbell and barbell), deadlifts, or whatever you are doing that day. Imagine that you are working your back and only your back when doing these exercises and visualize yourself doing these exercises from behind. Visualize what you would look like if you were standing behind yourself.";
+                                                break;
+                                            case 'Abs':
+                                                # code...
+                                                echo "Your diet is essential in building a lean physique. It is important to consume 4- to-6 small meals per day;The very first thing that you'll want to ensure is in place if you're going to increase the total tension that you place on the abs is a good mind-muscle connection.";
+                                                break;
+                                            case 'Arms':
+                                                # code...
+                                                echo "One key to building lean mass is keeping your muscles under tension. The best way to do this is by increasing the length of each rep by pausing for some extra squeeze at the top of the movement.Do supersets. Supersets are a technique which calls for you to do two exercises back-to-back without resting. One of the best ways to employ this technique is to do a triceps exercise and follow it immediately with a biceps exercise or vice versa.";
+                                                break;
+                                            case 'Shoulder':
+                                                echo "Overhead press exercises—dumbbell press, barbell press, behind-the-neck press, and many other variations—may seem fairly interchangeable, but they're actually quite different.Take Your Heavy Overhead Presses To The Front.If you've already got shoulder pain—as many long-time lifters do—overhead presses may be a contributing factor.Try Shoulder-Friendly Overhead-Press Variations.";
+                                                break;
+                                            case 'Butt':
+                                                # code...
+                                                echo "Cardiovascular exercises are the best form of exercises to perform. You need to make sure you are moving your body for at least thirty minutes each day. Weight training is also a good method to use and it can help you not only lose butt fat, but build up muscle.";
+                                                break;
+                                            case 'Legs':
+                                                # code...
+                                                echo "Don’t train legs without a partner. “A good training partner pushes you to handle more poundage and gives you incentive to grind out more reps per set,” Arnold wrote in his early autobiography. “Workouts are more fun with a partner as well as more competitive…you challenge each other.” When you’ve forced out all the reps you can for squats, for example, stand holding the weight for a moment, then do one more rep (with a partner spotting you) to push your body to its absolute limit.";
+                                                break;
+                                            default:
+                                                # code...
+                                                break;
+                                        }
+                                        echo "</li>";
+                                    }
+
+                                     ?>
+                                    <p></p>
                                 </div>
                                 <div class="tab-pane fade" id="friends">
                                     <h4>Suggestions based on friends</h4>
@@ -224,20 +281,18 @@
                                 </div>
                                 <div class="tab-pane fade" id="fitbit">
                                     <h4>Suggestions based on fitbit</h4>
-                                    <p><?php echo "Your BMI = $BMI\n";
+                                    <p><?php echo "Your BMI = $BMI<br/>";
                                     if ($BMI>25) {
-                                        echo "You are fat";
+                                        echo "Your body mass index (BMI) is $BMI which, according to the CDC, is classified as overweight for adults 20 years of age and older.<br/>";
                                     }
                                     elseif ($BMI<=25&&$BMI>18.5) {
-                                        echo "You are normal";
+                                        echo "Your body mass index (BMI) is $BMI which, according to the CDC, is classified as normal for adults 20 years of age and older.<br/>";
                                     }
                                     elseif ($BMI<=18.5) {
-                                        echo "You are thin";
+                                        echo "Your body mass index (BMI) is $BMI which, according to the CDC, is classified as underweight for adults 20 years of age and older.<br/>";
                                     }
-                                    else
-                                    {
-                                        echo "You are not human!";
-                                    }
+                                    echo "Your average step = $avgStep<br/>";
+                                    echo "Medical research has shown that overweight individuals who lose weight through exercise and/or dieting can significantly decrease their risk of heart disease, diabetes and other illnesses.A regular running program provides one of the best ways to lose weight or maintain healthy weight. Each mile you cover will burn approximately 125 calories.Running long and slow burns a higher percentage of fat calories, and teaches your body to become more efficient at fat-burning, which gives you more endurance for long runs and marathons.Running shorter and faster burns more total calories per minute or mile, which helps you lose weight, including body fat. Faster running also increases your 'afterburn' the calories your body continues burning after your run stops. We believe it is a good idea to mix longer runs and faster runs in your workout program.";
                                      ?> </p>
                                     
                                 </div>

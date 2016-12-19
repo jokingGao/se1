@@ -3,7 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2016-12-19 06:30:28
+
+-- Generation Time: 2016-12-19 00:50:59
 -- 服务器版本： 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -52,6 +53,7 @@ INSERT INTO `account` (`ID`, `UserName`, `Password`, `EmailAdd`, `FirstName`, `L
 (2, '', '123', '123@gmail.com', '', '', '', 22, 140, 70, 0, '', -74.4228545, 40.5265971),
 (3, '', '123', '321@gmail.com', '', '', '', 0, 0, 0, 0, '', -74.4, 40.5);
 
+
 -- --------------------------------------------------------
 
 --
@@ -74,6 +76,7 @@ INSERT INTO `friend` (`ID`, `EmailAdd`, `Send`, `Request`, `FriendList`) VALUES
 (1, 'yangs_uestc@163.com', '', '2,', '2,'),
 (2, '123@gmail.com', '1,', '3,', '1,'),
 (3, '321@gmail.com', '2', '', '');
+
 
 -- --------------------------------------------------------
 
@@ -143,6 +146,7 @@ ALTER TABLE `friend`
 --
 ALTER TABLE `plan`
   MODIFY `ID` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

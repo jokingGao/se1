@@ -30,81 +30,106 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
 
    //print_r($fclient->getUserProfile());
    $userProfile = $fclient->getUserProfile();
-   $user_weight = $userProfile[user][weight];
-   $user_height = $userProfile[user][height];
+   $user_weight = $userProfile['user']['weight'];
+   $user_height = $userProfile['user']['height'];
    $BMI = $user_weight/($user_height*$user_height/10000);
+   $avgStep = $userProfile['user']['averageDailySteps'];
    $_SESSION['BMI'] = $BMI;
-   print_r($BMI);
-   echo '<br />';
+   $_SESSION['avgStep'] = $avgStep;
    //print_r($fclient->getHeartRateIntraday());
 
    //Step
    $_SESSION['Steps'] = $fclient->getUserSteps();
+   $_SESSION['Data_step'] = $_SESSION['Steps']['activities-steps'];
    //print_r($_SESSION['Steps']);
-   echo '<br />';
-   echo '<br />';
-   $step_today = $_SESSION['Steps']['activities-steps']['30']['value'];
+   //echo '<br />';
+   //echo '<br />';
+   $step_today = $_SESSION['Data_step']['30']['value'];
+   $_SESSION['stepT'] = $step_today;
    //$_SESSION['STEP'] = $step_today;
-   print_r($step_today);
+   //print_r($step_today);
 
    //Calories
    $_SESSION['Calories'] = $fclient->getUserCalories();
+   $_SESSION['Data_calory'] = $_SESSION['Calories']['activities-calories'];
    //print_r($_SESSION['Calories']);
-   echo '<br />';
-   echo '<br />';
-   $calory_today = $_SESSION['Calories']['activities-calories']['30']['value'];
+   //echo '<br />';
+   //echo '<br />';
+   $calory_today = $_SESSION['Data_calory']['30']['value'];
+   $_SESSION['caloryT'] = $calory_today;
    //$_SESSION['CALORY'] = $calory_today;
-   print_r($calory_today);
+   //print_r($calory_today);
 
    //Distance
    $_SESSION['Distances'] = $fclient->getUserDistances();
+   $_SESSION['Data_distance'] = $_SESSION['Distances']['activities-distance'];
    //print_r($_SESSION['Distances']);
-   echo '<br />';
-   echo '<br />';
-   $distance_today = $_SESSION['Distances']['activities-distance']['30']['value'];
+   //echo '<br />';
+   //echo '<br />';
+   $distance_today = $_SESSION['Data_distance']['30']['value'];
+   $_SESSION['distanceT'] = $distance_today;
    //$_SESSION['DISTANCE'] = $distance_today;
-   print_r($distance_today);
+   //print_r($distance_today);
 
    //LightlyActive
    $_SESSION['ActiveLightly'] = $fclient->getUserActiveLightly();
+   $_SESSION['Data_active1'] = $_SESSION['ActiveLightly']['activities-minutesLightlyActive'];
    //print_r($_SESSION['ActiveLightly']);
-   echo '<br />';
-   echo '<br />';
-   $activelightly_today = $_SESSION['ActiveLightly']['activities-minutesLightlyActive']['30']['value'];
-   print_r($activelightly_today);
+   //echo '<br />';
+   //echo '<br />';
+   $activelightly_today = $_SESSION['Data_active1']['30']['value'];
+   //print_r($activelightly_today);
 
    //FairlyActive
    $_SESSION['ActiveFairly'] = $fclient->getUserActiveFairly();
+   $_SESSION['Data_active2'] = $_SESSION['ActiveFairly']['activities-minutesFairlyActive'];
    //print_r($_SESSION['ActiveFairly']);
-   echo '<br />';
-   $activefairly_today = $_SESSION['ActiveFairly']['activities-minutesFairlyActive']['30']['value'];
-   print_r($activefairly_today);
+   //echo '<br />';
+   $activefairly_today = $_SESSION['Data_active2']['30']['value'];
+   //print_r($activefairly_today);
 
    //VeryActive
    $_SESSION['ActiveVery'] = $fclient->getUserActiveVery();
+   $_SESSION['Data_active3'] = $_SESSION['ActiveVery']['activities-minutesVeryActive'];
    //print_r($_SESSION['ActiveVery']);
-   echo '<br />';
-   $activevery_today = $_SESSION['ActiveVery']['activities-minutesVeryActive']['30']['value'];
-   print_r($activevery_today);
+   //echo '<br />';
+   $activevery_today = $_SESSION['Data_active3']['30']['value'];
+   //print_r($activevery_today);
 
    //ActiveMinutes
    //$_SESSION['ActiveTime'] = $_SESSION['ActiveLightly'] + $_SESSION['ActiveFairly'] + $_SESSION['ActiveVery'];
    //print_r($_SESSION['ActiveTime']);
 
    //ActiveMinute_today
-   echo '<br />';
+   //echo '<br />';
    $active_today = $activelightly_today + $activefairly_today + $activevery_today;
+   $_SESSION['activeT'] = $active_today;
    //$_SESSION['ACTIVE'] = $active_today;
-   print_r($active_today);
+   //print_r($active_today);
 
    //SleepMinute_today
    $_SESSION['Sleep'] = $fclient->getUserSleep();
+   $_SESSION['Data_sleep'] = $_SESSION['Sleep']['sleep-minutesAsleep'];
    //print_r($_SESSION['Sleep']);
-   echo '<br />';
-   echo '<br />';
-   $sleep_today = $_SESSION['Sleep']['sleep-minutesAsleep']['30']['value'];
+   //echo '<br />';
+   //echo '<br />';
+   $sleep_today = $_SESSION['Data_sleep']['30']['value'];
+   $_SESSION['sleepT'] = $sleep_today;
    //$_SESSION['SLEEP'] = $sleep_today;
-   print_r($sleep_today);
+   //print_r($sleep_today);
+
+   $_SESSION['Goals'] = $fclient->getUserGoal();
+   //print_r($_SESSION['Goals']);
+   $goal_active = $_SESSION['Goals']['goals']['activeMinutes'];
+   $goal_calory = $_SESSION['Goals']['goals']['caloriesOut'];
+   $goal_distance = $_SESSION['Goals']['goals']['distance'];
+   $goal_step = $_SESSION['Goals']['goals']['steps'];
+   /*
+   print_r($goal_step);
+   print_r($goal_calory);
+   print_r($goal_distance);
+   print_r($goal_active);
+   */
 }
 ?>
 <!DOCTYPE html>
@@ -141,6 +166,14 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+    <script src="morris.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+    <script src="examples/lib/example.js"></script>
+    <!--<link rel="stylesheet" href="lib/example.css">-->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+    <link rel="stylesheet" href="morris.css">
 
 </head>
 
@@ -388,77 +421,66 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Goals and daily achivements
                             <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Steps
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Steps</a>
-                                        </li>
-                                        <li><a href="#">Calories</a>
-                                        </li>
-                                        <li><a href="#">Miles</a>
-                                        </li>
-                                        <li><a href="#">Active Hours</a>
-                                        </li>
-                                        <li><a href="#">Sleep Hours</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">View detail</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                
                             </div>
                         </div>
 
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div id="graph"></div>
+<script type="text/javascript">
+// Use Morris.Area instead of Morris.Line
+Morris.Line({
+  element: 'graph',
+  data: [
+    {x: 10, y: <?php echo $goal_step; ?>, z: <?php echo $step_today; ?>},
+    {x: 20, y: <?php echo $goal_calory; ?>, z: <?php echo $calory_today; ?>},
+    {x: 30, y: <?php echo $goal_distance; ?>, z: <?php echo $distance_today; ?>},
+    {x: 40, y: <?php echo $goal_active; ?>, z: <?php echo $active_today; ?>}
+  ],
+  xkey: 'x',
+  ykeys: ['y','z'],
+  labels: ['Goal', 'Actual']
+}).on('click', function(i, row){
+  console.log(i, row);
+});
+</script>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Goals and daily achivements
+                            <div class="pull-right">
+                                
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <div id="graphb"></div>
+<script type="text/javascript">
+// Use Morris.Area instead of Morris.Line
+Morris.Bar({
+  element: 'graphb',
+  data: [
+    {x: 10, y: <?php echo $goal_step; ?>, z: <?php echo $step_today; ?>},
+    {x: 20, y: <?php echo $goal_calory; ?>, z: <?php echo $calory_today; ?>},
+    {x: 30, y: <?php echo $goal_distance; ?>, z: <?php echo $distance_today; ?>},
+    {x: 40, y: <?php echo $goal_active; ?>, z: <?php echo $active_today; ?>}
+  ],
+  xkey: 'x',
+  ykeys: ['y','z'],
+  labels: ['Goal', 'Actual']
+}).on('click', function(i, row){
+  console.log(i, row);
+});
+</script>
                         </div>
 
                     </div>
                     <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Steps
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="step.php">Steps</a>
-                                        </li>
-                                        <li><a href="#">Calories</a>
-                                        </li>
-                                        <li><a href="Miles.php">Miles</a>
-                                        </li>
-                                        <li><a href="#">Active Hours</a>
-                                        </li>
-                                        <li><a href="#">Sleep Hours</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">View detail</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div id="morris-bar-chart"></div>
-                                </div>
-                                <!-- /.col-lg-8 (nested) -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
+                    
                     <!-- /.panel -->
                 
             </div>
@@ -479,9 +501,11 @@ if (isset($_SESSION['authFitbit']) && $_SESSION['authFitbit'] == 1) {
     <script src="scripts/metisMenu.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
+    <!--
     <script src="scripts/raphael.min.js"></script>
     <script src="scripts/morris.min.js"></script>
     <script src="scripts/morris-data.js"></script>
+    -->
 
     <!-- Custom Theme JavaScript -->
     <script src="scripts/sb-admin-2.js"></script>
